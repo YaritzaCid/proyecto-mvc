@@ -11,10 +11,10 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@prisma/client": "^7.8.0",
+    "@prisma/client": "^6.19.3",
     "express": "^4.22.1",
     "express-handlebars": "^9.0.1",
-    "prisma": "^7.8.0"
+    "prisma": "^6.19.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
