@@ -1,0 +1,9 @@
+<h1>Listado de afiliados</h1>
+
+<ul>
+  {{#each affiliates}}
+    <li>
+      {{this.firstName}} {{this.lastName}} - {{this.membershipType}}
+    </li>
+  {{/each}}
+</ul>
