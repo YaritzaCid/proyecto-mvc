@@ -7,3 +7,25 @@
     </li>
   {{/each}}
 </ul>
+
+<h1>Listado de afiliados</h1>
+
+<a href="/affiliates/create">
+  Crear afiliado
+</a>
+
+
+<!-- Id por afiliado -->
+<ul>
+  {{#each affiliates}}
+    <li>
+
+      {{this.firstName}} {{this.lastName}}
+
+      <a href="/affiliates/{{this.id}}">
+        Ver detalle
+      </a>
+
+    </li>
+  {{/each}}
+</ul>
