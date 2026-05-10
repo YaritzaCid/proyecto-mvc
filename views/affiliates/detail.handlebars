@@ -8,6 +8,16 @@
 
 <p><strong>Membresía:</strong> {{affiliate.membershipType}}</p>
 
+<a href="/affiliates/edit/{{affiliate.id}}">
+  Editar afiliado
+</a>
+
 <a href="/affiliates">
   Volver
 </a>
+
+<form method="POST" action="/affiliates/delete/{{affiliate.id}}">
+  <button type="submit">
+    Eliminar afiliado
+  </button>
+</form>

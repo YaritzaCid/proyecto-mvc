@@ -1,0 +1,19 @@
+<h1>Editar afiliado</h1>
+
+<form method="POST" action="/affiliates/edit/{{affiliate.id}}">
+  <input type="text" name="firstName" value="{{affiliate.firstName}}" required>
+
+  <input type="text" name="lastName" value="{{affiliate.lastName}}" required>
+
+  <input type="email" name="email" value="{{affiliate.email}}" required>
+
+  <select name="membershipType">
+    <option value="silver">Silver</option>
+    <option value="gold">Gold</option>
+    <option value="platinium">Platinium</option>
+  </select>
+
+  <button type="submit">Actualizar</button>
+</form>
+
+<a href="/affiliates">Volver</a>

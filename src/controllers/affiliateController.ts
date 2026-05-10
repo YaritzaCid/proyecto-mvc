@@ -62,3 +62,51 @@ export const showAffiliate = async (req: Request, res: Response) => {
   });
 };
 
+/* edición de afiliados*/
+export const showEditForm = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  const affiliate = await prisma.affiliate.findUnique({
+    where: { id },
+  });
+
+  if (!affiliate) {
+    return res.send("Afiliado no encontrado");
+  }
+
+  res.render("affiliates/edit", {
+    affiliate,
+  });
+};
+
+export const updateAffiliate = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  const { firstName, lastName, email, membershipType } = req.body;
+
+  await prisma.affiliate.update({
+    where: { id },
+    data: {
+      firstName,
+      lastName,
+      email,
+      membershipType,
+    },
+  });
+
+  res.redirect("/affiliates");
+};
+
+/* Borrar afiliado */
+export const deleteAffiliate = async (req: Request, res: Response) => {
+
+  const id = Number(req.params.id);
+
+  await prisma.affiliate.delete({
+    where: {
+      id,
+    },
+  });
+
+  res.redirect("/affiliates");
+};
