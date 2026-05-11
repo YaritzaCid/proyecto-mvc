@@ -14,9 +14,10 @@ app.set("views", "./views");
 app.use("/affiliates", affiliateRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Bienvenido a DentPlus 🚀");
+  res.render("home");
 });
 
 app.listen(3000, () => {
   console.log("Servidor corriendo en http://localhost:3000");
 });
+

@@ -1,11 +1,15 @@
 import { Request, Response } from "express";
-import prisma from "../prisma/client";
+import {
+  getAllAffiliates,
+  getAffiliateById,
+  createAffiliateModel,
+  updateAffiliateModel,
+  deleteAffiliateModel,
+  getDiscountByMembership,
+} from "../models/affiliateModel";
 
 export const listAffiliates = async (req: Request, res: Response) => {
-
-  const affiliates = await prisma.affiliate.findMany();
-
-  console.log(affiliates);
+  const affiliates = await getAllAffiliates();
 
   res.render("affiliates/list", {
     affiliates,
@@ -17,58 +21,44 @@ export const showCreateForm = (req: Request, res: Response) => {
 };
 
 export const createAffiliate = async (req: Request, res: Response) => {
-
   const { firstName, lastName, email, membershipType } = req.body;
 
-/*Evitar duplicados en el formulario*/
-const existing = await prisma.affiliate.findUnique({
-  where: { email }
-});
+  const affiliates = await getAllAffiliates();
 
-if (existing) {
-  return res.send("Este email ya está registrado");
-}
+  const existing = affiliates.find((affiliate) => affiliate.email === email);
 
-  await prisma.affiliate.create({
-    data: {
-      firstName,
-      lastName,
-      email,
-      membershipType,
-    },
+  if (existing) {
+    return res.send("Este email ya está registrado");
+  }
+
+  await createAffiliateModel({
+    firstName,
+    lastName,
+    email,
+    membershipType,
   });
 
   res.redirect("/affiliates");
 };
 
-
-/* Ver afiliado individualmente */
 export const showAffiliate = async (req: Request, res: Response) => {
-
   const id = Number(req.params.id);
 
-  const affiliate = await prisma.affiliate.findUnique({
-    where: {
-      id,
-    },
-  });
+  const affiliate = await getAffiliateById(id);
 
   if (!affiliate) {
     return res.send("Afiliado no encontrado");
-  };
+  }
 
   res.render("affiliates/detail", {
     affiliate,
   });
 };
 
-/* edición de afiliados*/
 export const showEditForm = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
 
-  const affiliate = await prisma.affiliate.findUnique({
-    where: { id },
-  });
+  const affiliate = await getAffiliateById(id);
 
   if (!affiliate) {
     return res.send("Afiliado no encontrado");
@@ -84,29 +74,43 @@ export const updateAffiliate = async (req: Request, res: Response) => {
 
   const { firstName, lastName, email, membershipType } = req.body;
 
-  await prisma.affiliate.update({
-    where: { id },
-    data: {
-      firstName,
-      lastName,
-      email,
-      membershipType,
-    },
+  await updateAffiliateModel(id, {
+    firstName,
+    lastName,
+    email,
+    membershipType,
   });
 
   res.redirect("/affiliates");
 };
 
-/* Borrar afiliado */
 export const deleteAffiliate = async (req: Request, res: Response) => {
-
   const id = Number(req.params.id);
 
-  await prisma.affiliate.delete({
-    where: {
-      id,
-    },
-  });
+  await deleteAffiliateModel(id);
 
   res.redirect("/affiliates");
 };
+
+export const simulateDiscount = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const amount = Number(req.body.amount);
+
+  const affiliate = await getAffiliateById(id);
+
+  if (!affiliate) {
+    return res.send("Afiliado no encontrado");
+  }
+
+  const discount = getDiscountByMembership(affiliate.membershipType);
+  const discountPercent = discount * 100;
+  const finalPrice = amount - amount * discount;
+
+  res.render("affiliates/detail", {
+    affiliate,
+    amount,
+    discountPercent,
+    finalPrice,
+  });
+};
+
