@@ -153,6 +153,16 @@ dev.db
 
 ---
 
+---
+
+# Video demostrativo
+
+El funcionamiento del sistema y explicación del proyecto se encuentra disponible en el siguiente enlace:
+
+[Ver video en YouTube](https://youtu.be/eF6qDWzsh0s)
+
+---
+
 # Autor
 
 Proyecto desarrollado por Yaritza Cid.
